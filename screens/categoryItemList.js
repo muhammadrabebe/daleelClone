@@ -7,12 +7,9 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {
-  searchIcon,
-  backIcon,
-  locationIcon_Large,
-  locationIcon,
-} from '../assets/icons';
+import {searchIcon, locationIcon} from '../assets/icons';
+import CustomHeader from '../components/customHeader';
+import styles from './styles/categoryItemListStyle';
 
 const categoryItemList = props => {
   const item = props.route.params.item;
@@ -23,21 +20,7 @@ const categoryItemList = props => {
   );
 
   function renderheader() {
-    return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            {backIcon}
-          </TouchableOpacity>
-          <Text style={{fontSize: 18, color: '#ffcc33', width: '75%'}}>
-            {item.name}
-          </Text>
-        </View>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          {locationIcon_Large}
-        </View>
-      </View>
-    );
+    return <CustomHeader navigation={props.navigation} title={item.name} />;
   }
 
   function renderSearchBox() {
@@ -49,19 +32,10 @@ const categoryItemList = props => {
       setItemLocations(newItemList);
     }
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          margin: 8,
-          borderRadius: 5,
-          borderWidth: 1,
-          alignItems: 'center',
-          borderColor: 'white',
-          backgroundColor: 'white',
-        }}>
+      <View style={styles.searchBoxContainer}>
         {searchIcon}
         <TextInput
-          style={{width: '100%', padding: 8, fontSize: 16}}
+          style={styles.searchBoxTextInput}
           placeholder="Search"
           onChangeText={value => {
             search(value);
@@ -75,22 +49,20 @@ const categoryItemList = props => {
     const renderItem = ({item}) => {
       return (
         <TouchableOpacity
-          style={{flexDirection: 'row'}}
+          style={styles.itemLocationContainer}
           onPress={() => props.navigation.navigate('CategoryDetails', {item})}>
-          <View style={{alignItems: 'center'}}>
+          <View style={styles.imageContainer}>
             <Image
               source={item.locationImage}
-              style={{width: 100, height: 100}}
+              style={styles.imageStyle}
               resizeMode="contain"
             />
           </View>
-          <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
-            <Text style={{color: '#ffcc33', fontSize: 20, margin: 10}}>
-              {item.name}
-            </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={styles.item}>
+            <Text style={styles.itemLocationName}>{item.name}</Text>
+            <View style={styles.itemLocationIconContainer}>
               {locationIcon}
-              <Text style={{fontSize: 16, width: '75%'}}>
+              <Text style={styles.itemLocationDetails}>
                 {item.locationDetails}
               </Text>
             </View>
@@ -100,22 +72,12 @@ const categoryItemList = props => {
     };
     return (
       <FlatList
-        style={{
-          marginTop: 15,
-          backgroundColor: 'white',
-          margin: 8,
-          borderRadius: 15,
-        }}
+        style={styles.flatlistStyle}
         renderItem={renderItem}
         data={itemLocations}
         keyExtractor={item => item.key}
         ItemSeparatorComponent={() => (
-          <View
-            style={{
-              borderWidth: 0.5,
-              borderColor: 'lightgray',
-              margin: 10,
-            }}></View>
+          <View style={styles.flatlistDivider}></View>
         )}
       />
     );

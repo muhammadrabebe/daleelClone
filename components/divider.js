@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-const divider = title => {
+const divider = ({title}) => {
   return (
     <View style={{marginVertical: 20}}>
       <View style={{flexDirection: 'row'}}>
